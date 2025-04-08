@@ -1,0 +1,46 @@
+﻿@model TaskManager.Models.TaskItem
+
+@{
+    ViewData["Title"] = "Edit Task";
+}
+
+<h2>Edit Task</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input asp-for="Title" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <!-- ✅ Dropdown for Assigned User -->
+    <div class="mb-3">
+        <label class="form-label">Assigned To</label>
+        <select asp-for="AssignedToUserId" class="form-control">
+            <option value="">-- Select a User --</option>
+            @foreach (var user in ViewBag.Users)
+            {
+                <option value="@user.Id" selected="@(user.Id == Model.AssignedToUserId ? "selected" : null)">
+                    @user.UserName
+                </option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Status</label>
+        <select asp-for="IsCompleted" class="form-control">
+            <option value="false">Pending</option>
+            <option value="true">Completed</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

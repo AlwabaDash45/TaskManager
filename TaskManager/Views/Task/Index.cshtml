@@ -1,0 +1,51 @@
+﻿@model IEnumerable<TaskManager.Models.TaskItem>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<h2>Task List</h2>
+
+<!-- ✅ Show "Create Task" Button for Admins -->
+@if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("SuperAdmin")))
+{
+    <a asp-action="Create" class="btn btn-primary mb-3">Create New Task</a>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Assigned To</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td>@task.Title</td>
+                <td>@task.Description</td>
+                <td>@(task.AssignedToUser != null ? task.AssignedToUser.UserName : "Unassigned")</td>
+                <td>@(task.IsCompleted ? "Completed" : "Pending")</td>
+                <td>
+                    <!-- ✅ Admins can Edit/Delete any task -->
+                    @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@task.Id" class="btn btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@task.Id" class="btn btn-danger">Delete</a>
+                    }
+
+                    <!-- ✅ Users can mark their tasks as completed -->
+                    @if (User.IsInRole("User") && task.AssignedToUserId == UserManager.GetUserId(User) && !task.IsCompleted)
+                    {
+                        <form method="post" asp-action="MarkComplete" asp-route-id="@task.Id">
+                            <button type="submit" class="btn btn-success">Mark as Complete</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

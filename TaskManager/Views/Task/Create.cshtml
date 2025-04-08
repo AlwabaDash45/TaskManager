@@ -1,0 +1,32 @@
+﻿@model TaskManager.Models.TaskItem
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+<h2>Create Task</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label for="Title" class="form-label">Title</label>
+        <input type="text" class="form-control" asp-for="Title" required />
+    </div>
+
+    <div class="mb-3">
+        <label for="Description" class="form-label">Description</label>
+        <textarea class="form-control" asp-for="Description"></textarea>
+    </div>
+
+    
+    <div class="mb-3">
+        <label for="AssignedToUserId" class="form-label">Assign To</label>
+        <select class="form-control" name="AssignedToUserId" required>
+            <option value="">-- Select a User --</option>
+            @foreach (var user in ViewBag.Users)
+            {
+                <option value="@user.Id">@user.FullName</option>
+            }
+        </select>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Create Task</button>
+</form>

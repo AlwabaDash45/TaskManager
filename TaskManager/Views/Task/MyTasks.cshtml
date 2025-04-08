@@ -1,0 +1,32 @@
+﻿@model IEnumerable<TaskManager.Models.TaskItem>
+
+<h2>My Tasks</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td>@task.Title</td>
+                <td>@task.Description</td>
+                <td>@(task.IsCompleted ? "Completed" : "Pending")</td>
+                <td>
+                    @if (!task.IsCompleted)
+                    {
+                        <form method="post" asp-action="MarkComplete" asp-route-id="@task.Id">
+                            <button type="submit" class="btn btn-success">Mark as Complete</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
