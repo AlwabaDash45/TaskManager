@@ -84,10 +84,10 @@ The app seeds two users for demonstration:
 
 ## Author
 
-Created by [Alwaba Loyola Dlanga] with help from ChatGPT 🤖
+Created by [Alwaba Loyola Dlanga] with help from ChatGPT 
 
 ---
 
 ## License
 
-This project is open-source and available under the [MIT License](LICENSE).
+This open-source project is available under the [MIT License](LICENSE).
